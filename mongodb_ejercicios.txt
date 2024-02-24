@@ -1,0 +1,120 @@
+// ------------------------- EJERCICIOS A REALIZAR ---------------------
+
+/*
+1) crear una base de datos llamada empresas
+2) Crear las colecciones "usuarios","empresas","inventario".
+3) Crear 10 usuarios con las propiedades: nombre, apellido, edad, sexo, salario, empresa.
+4) Crear 10 empresas con las propiedades: nombre, area, cantidad de empleados, fecha de fundacion.
+5) Crear 10 invetarios con las propiedades: lista de productos fisicos(nombre, precio), lista de productos digitales(nombre,precio), inversion de inventario, costo de venta.
+6) Trae todos los usuarios que formen parte de una empresa con la informacion de la empresa.
+7) Trae todos los usuarios mayores de 35 años y dales un bono de 150$.
+8) Trae todas las empresas que tengan una cantidad de empleados mayores a 50.
+9) Trae todos los usuarios cuyo nombre empiece por "J".
+10) Borra solo dos usuarios cuya edad sea menor a 20.
+*/
+
+
+// ------------------------- RESOLUCIÓN -----------------------------------
+
+1) crear una base de datos llamada empresas:
+
+Add Database -> Database name -> "empresas"
+
+
+2) Crear las colecciones "usuarios","empresas","inventario":
+
+db.createCollection('usuarios')
+
+db.createCollection('empresas')
+
+db.createCollection('inventario')
+
+
+3) Crear 10 usuarios con las propiedades: nombre, apellido, edad, sexo, salario, empresa:
+
+db.usuarios.insertMany([
+    {nombre:"María", apellido:"Ollarves", edad:25, sexo:"Femenino", salario:1000, empresa: "EPA"},
+    {nombre:"Jose", apellido:"Herrera", edad:21, sexo:"Masculino", salario:500, empresa: "Forum"},
+    {nombre:"Luis", apellido:"Ramírez", edad:60, sexo:"Masculino", salario:400, empresa: "Pasteleria Monagas"}, 
+    {nombre:"Coromoto", apellido:"Cardozo", edad:42, sexo:"Femenino", salario:300, empresa: "Hobby 2000"},
+    {nombre:"Juliana", apellido:"Moreno", edad:55, sexo:"Femenino", salario:500, empresa: "Farmatodo"},
+    {nombre:"Oliver", apellido:"Atom", edad:18, sexo:"Masculino", salario:250, empresa: "Domino's Pizza"},
+    {nombre:"Amarilys", apellido:"Salazar", edad:28, sexo:"Femenino", salario:500, empresa: "4D"},
+    {nombre:"Pedro", apellido:"Perez", edad:19, sexo:"Masculino", salario:400, empresa: "Las Villas"},
+    {nombre:"Antonio", apellido:"Ramos", edad:29, sexo:"Masculino", salario:300, empresa: "Zara"},
+    {nombre:"Xiomara", apellido:"Madrigal", edad:33, sexo:"Femenino", salario:500, empresa: "Tecni Ciencia Libros"}
+])
+
+
+4) Crear 10 empresas con las propiedades: nombre, area, cantidad de empleados, fecha de fundacion:
+
+db.empresas.insertMany([
+    {nombre:"Pasteleria Monagas", area:"Panaderia", cantidad_empleados:1, fecha_de_fundacion:"1989-08-04"},
+    {nombre: "EPA", area:"Ferretería", cantidad_empleados:1, fecha_de_fundacion:"2001-05-23"},
+    {nombre: "Hobby 2000", area:"Juguetería", cantidad_empleados:1, fecha_de_fundacion:"2000-08-19"},
+    {nombre: "Farmatodo", area:"Farmacia", cantidad_empleados:1, fecha_de_fundacion:"1988-04-12"},
+    {nombre: "4D", area:"Heladería", cantidad_empleados:1, fecha_de_fundacion:"2004-11-28"},
+    {nombre: "Tecni Ciencia Libros", area:"Librería", cantidad_empleados:1, fecha_de_fundacion:"2005-04-21"},
+    {nombre: "Zara", area:"Ropa", cantidad_empleados:1, fecha_de_fundacion:"1970-09-18"},
+    {nombre: "Las Villas", area:"Perfumería", cantidad_empleados:1, fecha_de_fundacion:"1966-09-15"},
+    {nombre: "Domino's Pizza", area:"Pizzería", cantidad_empleados:1, fecha_de_fundacion:"1960-04-01"},
+    {nombre: "Forum", area:"Supermercado", cantidad_empleados:1, fecha_de_fundacion:"2015-07-16"}
+])
+
+
+5) Crear 10 invetarios con las propiedades: lista de productos fisicos(nombre, precio), lista de productos digitales(nombre,precio), inversion de inventario, costo de venta:
+
+db.inventario.insertMany([
+    {productos_fisicos:{nombre:"CD Adele", precio:15}, productos_digitales:{nombre:"CD Adele", precio:13}, inversion_inventario:2000, costo_venta:2500},
+
+    {productos_fisicos:{nombre:"The legend of Zelda", precio:70}, productos_digitales:{nombre:"The legend of Zelda", precio:60}, inversion_inventario:1000, costo_venta:1500},
+    
+    {productos_fisicos:{nombre:"Juego de Tronos", precio:20}, productos_digitales:{nombre:"juego de tronos", precio:10}, inversion_inventario:1000, costo_venta:1500},
+
+    {productos_fisicos:{nombre:"CD Queen", precio:15}, productos_digitales:{nombre:"CD Queen", precio:13}, inversion_inventario:2000, costo_venta:2500},
+
+    {productos_fisicos:{nombre:"Super Mario", precio:70}, productos_digitales:{nombre:"Super Mario", precio:60}, inversion_inventario:1000, costo_venta:1500},
+
+    {productos_fisicos:{nombre:"Harry Potter y la piedra filosofal", precio:20}, productos_digitales:{nombre:"Harry Potter y la piedra filosofal", precio:10}, inversion_inventario:1000, costo_venta:1500},
+    
+    {productos_fisicos:{nombre:"CD Shakira", precio:20}, productos_digitales:{nombre:"CD Shakira", precio:10}, inversion_inventario:1000, costo_venta:1500},
+
+    {productos_fisicos:{nombre:"GTA VI", precio:80}, productos_digitales:{nombre:"GTA VI", precio:70}, inversion_inventario:1000, costo_venta:1500},
+    
+    {productos_fisicos:{nombre:"El señor de los anillos", precio:20}, productos_digitales:{nombre:"El señor de los anillos", precio:10}, inversion_inventario:1000, costo_venta:1500},
+
+    {productos_fisicos:{nombre:"Los juegos del hambre", precio:20}, productos_digitales:{nombre:"Los juegos del hambre", precio:10}, inversion_inventario:1000, costo_venta:1500}
+])
+
+
+6) Trae todos los usuarios que formen parte de una empresa con la informacion de la empresa:
+
+db.empresas.aggregate([{$lookup:{from:"usuarios", localField:"nombre", foreignField:"empresa", as:"empleados_de_empresa"}}])
+
+
+7) Trae todos los usuarios mayores de 35 años y dales un bono de 150$:
+
+db.usuarios.aggregate([{$match:{edad:{$gt:35}}},{$addFields:{bono:150}}])
+
+
+8) Trae todas las empresas que tengan una cantidad de empleados mayores a 50:
+
+db.usuarios.aggregate([{$match:{edad:{$gt:50}}},{$group:{_id:'$empresa'}}])
+
+
+9) Trae todos los usuarios cuyo nombre empiece por "J":
+
+db.usuarios.find({nombre:/^J/i})
+
+
+10) Borra solo dos usuarios cuya edad sea menor a 20:
+
+db.usuarios.remove({edad:{$lt:20}}).limit(2)
+
+
+
+
+
+
+
+
